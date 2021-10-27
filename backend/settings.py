@@ -42,6 +42,7 @@ SHARED_APPS = (
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+    'graphene_django',
     'easy_thumbnails',
     'corsheaders',
 
@@ -56,6 +57,7 @@ TENANT_APPS = (
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+    'graphene_django',
     'easy_thumbnails',
     'corsheaders',
 
@@ -189,3 +191,11 @@ CORS_ORIGIN_WHITELIST = [
 CORS_ORIGIN_ALLOW_ALL = True
 
 DJANGO_ALLOW_ASYNC_UNSAFE = True
+
+# graphene config
+GRAPHENE = {
+    'SCHEMA': 'backend.schema.schema',
+    'MIDDLEWARE': [
+        'backend.middlewares.W3AuthMiddleware'
+    ]
+}

@@ -1,9 +1,19 @@
 from django.contrib import admin
-from django.contrib.auth import get_user_model
 
-User = get_user_model()
+from users.models import (
+    ResetPassword,
+    UnitOfHistory,
+    User,
+    UserDeviceToken,
+    UserOTP,
+    UserProfile,
+    UserSocialAccount,
+)
 
-
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ("email", "username", "is_active", "is_staff", "is_superuser")
+admin.site.register(User)
+admin.site.register(UnitOfHistory)
+admin.site.register(UserProfile)
+admin.site.register(ResetPassword)
+admin.site.register(UserSocialAccount)
+admin.site.register(UserDeviceToken)
+admin.site.register(UserOTP)

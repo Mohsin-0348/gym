@@ -17,11 +17,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
+from graphene_file_upload.django import FileUploadGraphQLView
 
 from clients import views as client_views
+from users.views import EmailVerify
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('graphql/', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True))),
+    path('verify/<token>/', EmailVerify.as_view(), name='email_verify'),
     path('', client_views.index),
 ]
 

@@ -17,3 +17,4 @@ class HistoryActions(models.TextChoices):
     PASSWORD_RESET = 'password-reset'
     ACCOUNT_DEACTIVATE = 'account-deactivate'
     ADDRESS_ADDED = 'address-added'
+    SOCIAL_SINGUP = 'social-signup'

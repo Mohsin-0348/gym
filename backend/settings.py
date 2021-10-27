@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = [config('ALLOWED_HOSTS', None)]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=['localhost'], cast=lambda v: [s.strip() for s in v.split(',')])
 
 
 # Application definition
@@ -113,7 +113,7 @@ DATABASES = {
         'USER': config('DB_USER', None),
         'PASSWORD': config('DB_PASSWORD', None),
         'HOST': config('DB_HOST', None),
-        'PORT': config('DB_PORT', None)
+        'PORT': config('DB_PORT', 5432, cast=int)
     }
 }
 

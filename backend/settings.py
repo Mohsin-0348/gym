@@ -42,9 +42,10 @@ SHARED_APPS = (
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+    'easy_thumbnails',
+    'corsheaders',
 
     # public apps
-    'easy_thumbnails',
 )
 
 TENANT_APPS = (
@@ -55,6 +56,8 @@ TENANT_APPS = (
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+    'easy_thumbnails',
+    'corsheaders',
 
     # tenant-specific apps
     'users',
@@ -63,6 +66,7 @@ TENANT_APPS = (
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django_tenants.middleware.main.TenantMainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -158,6 +162,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = []
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
+# Media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -167,3 +181,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SHOW_PUBLIC_IF_NO_TENANT_FOUND = True
 
 # DB_PREFIX = 'w3gym'
+
+# Cores origin
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",
+]
+CORS_ORIGIN_ALLOW_ALL = True
+
+DJANGO_ALLOW_ASYNC_UNSAFE = True

@@ -1,11 +1,10 @@
 # at w3gym/backend/users/models.py
 
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.validators import RegexValidator
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 # ThirdParty Library imports
@@ -23,7 +22,6 @@ from .choices import (
 )
 from .managers import (
     UserDeviceTokenManager,
-    UserManager,
     UserOTPManager,
     UserPasswordResetManager,
     UserSocialAccountManager,
@@ -32,14 +30,14 @@ from .managers import (
 # Create your models here.
 
 
-class User(BaseModelWithOutId, AbstractBaseUser, PermissionsMixin):
+class User(BaseModelWithOutId, AbstractUser, PermissionsMixin):
     """Store custom user information.
     all fields are common for all users."""
-    username = models.CharField(
-        max_length=20,
-        unique=True,
-        null=True
-    )  # unique user name to perform username password login.
+    # username = models.CharField(
+    #     max_length=20,
+    #     unique=True,
+    #     null=True
+    # )  # unique user name to perform username password login.
     email = models.EmailField(
         max_length=100,
         unique=True
@@ -47,23 +45,24 @@ class User(BaseModelWithOutId, AbstractBaseUser, PermissionsMixin):
     is_email_verified = models.BooleanField(
         default=False
     )
-    is_active = models.BooleanField(
-        default=True
-    )
-    is_staff = models.BooleanField(
-        default=False
-    )
+    # is_active = models.BooleanField(
+    #     default=True
+    # )
+    # is_staff = models.BooleanField(
+    #     default=False
+    # )
     is_superuser = models.BooleanField(
+        _('superuser status'),
         default=False
     )  # main man of this application.
     last_active_on = models.DateTimeField(
         null=True,
         blank=True
     )
-    date_joined = models.DateTimeField(
-        _('date joined'),
-        default=timezone.now
-    )
+    # date_joined = models.DateTimeField(
+    #     _('date joined'),
+    #     default=timezone.now
+    # )
     activation_token = models.UUIDField(
         blank=True,
         null=True
@@ -82,10 +81,10 @@ class User(BaseModelWithOutId, AbstractBaseUser, PermissionsMixin):
     # last login will provide by django abstract_base_user.
     # password also provide by django abstract_base_user.
 
-    objects = UserManager()
+    # objects = UserManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    # USERNAME_FIELD = 'email'
+    # REQUIRED_FIELDS = ['username']
 
     # class Meta:
     #     db_table = f"{settings.DB_PREFIX}_users"

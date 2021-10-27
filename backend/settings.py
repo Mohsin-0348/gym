@@ -33,7 +33,6 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=['localhost'], cast=lambda v: [s
 # Application definition
 SHARED_APPS = (
     'django_tenants',
-    'users',
     'clients',
 
     'django.contrib.admin',
@@ -47,6 +46,7 @@ SHARED_APPS = (
     'corsheaders',
 
     # public apps
+    'users',
 )
 
 TENANT_APPS = (

@@ -135,7 +135,7 @@ def social_signup(
                     "code": "duplicate_email"
                 }
             )
-    user = User.objects.create_user(email)
+    user = User.objects.create_user(email.split("@")[0], email)
     UserSocialAccount.objects.create(
         user=user,
         social_id=social_id,

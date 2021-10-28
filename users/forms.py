@@ -14,12 +14,13 @@ class UserRegistrationForm(forms.ModelForm):
 
 
 class UserUpdateForm(forms.ModelForm):
+    username = forms.CharField(max_length=150, required=True)
     first_name = forms.CharField(max_length=150, required=True)
     last_name = forms.CharField(max_length=150, required=True)
 
     class Meta:
         model = UserProfile
-        fields = ("first_name", "last_name", "gender", "phone", "date_of_birth")
+        fields = ("username", "first_name", "last_name", "gender", "phone", "date_of_birth")
 
 
 class AddressForm(forms.ModelForm):

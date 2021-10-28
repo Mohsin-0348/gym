@@ -84,10 +84,11 @@ class UpdateUser(DjangoFormMutation):
         user = info.context.user
         form = UserUpdateForm(data=input)
         if form.is_valid():
+            user.first_name = form.cleaned_data['username']
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
             user.save()
-            del form.cleaned_data['first_name'], form.cleaned_data['last_name']
+            del form.cleaned_data['first_name'], form.cleaned_data['last_name'], form.cleaned_data['username']
             user_profile, created = UserProfile.objects.get_or_create(user=user)
             if user.is_admin and created:
                 form.cleaned_data['role'] = RoleChoices.ADMIN
@@ -269,7 +270,7 @@ class SocialLogin(graphene.Mutation):
         social_id,
         email,
         id_token=None,
-        verification=False,
+        need_verification=False,
         activate=False
     ):
         if social_type == 'apple' and not id_token:
@@ -289,7 +290,7 @@ class SocialLogin(graphene.Mutation):
             social_id,
             email,
             activate,
-            verification
+            need_verification
         )
         access = TokenManager.get_access({"user_id": str(user.id)})
         refresh = TokenManager.get_refresh({"user_id": str(user.id)})

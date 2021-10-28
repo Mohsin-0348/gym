@@ -18,3 +18,4 @@ class HistoryActions(models.TextChoices):
     ACCOUNT_DEACTIVATE = 'account-deactivate'
     ADDRESS_ADDED = 'address-added'
     SOCIAL_SINGUP = 'social-signup'
+    SOCIAL_LOGIN = 'social-login'

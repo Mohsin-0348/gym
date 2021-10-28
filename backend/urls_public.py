@@ -22,7 +22,7 @@ from clients import views as client_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', client_views.index),
+    path('', client_views.ClientsView.as_view()),
 ]
 
 urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

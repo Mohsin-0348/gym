@@ -86,6 +86,14 @@ class UpdateUser(DjangoFormMutation):
         form = UserUpdateForm(data=input)
         if not created:
             form = UserUpdateForm(data=input, instance=user_profile)
+        if User.objects.filter(username=form.data['username']).exclude(id=user.id):
+            raise GraphQLError(
+                message="Username already exists.",
+                extensions={
+                    "errors": "Username already exists.",
+                    "code": "invalid_input"
+                }
+            )
         if form.is_valid():
             user.username = form.cleaned_data['username']
             user.first_name = form.cleaned_data['first_name']

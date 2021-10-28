@@ -128,6 +128,9 @@ class Address(models.Model):
     postal_code = models.CharField(max_length=32)
     country = models.CharField(max_length=128)
 
+    def __str__(self):
+        return self.address1
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(

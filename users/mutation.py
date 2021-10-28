@@ -132,7 +132,7 @@ class AddressMutation(DjangoFormMutation):
             user_profile, created = UserProfile.objects.get_or_create(user=user)
             if user_profile.address:
                 address = user_profile.address
-                address.update(**form.cleaned_data)
+                Address.objects.filter(id=address.id).update(**form.cleaned_data)
             else:
                 address = Address.objects.create(**form.cleaned_data)
                 UserProfile.objects.filter(id=user_profile.id).update(address=address)

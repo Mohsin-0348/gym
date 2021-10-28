@@ -13,6 +13,7 @@ from easy_thumbnails.fields import ThumbnailerImageField
 # local imports
 from bases.models import BaseModel, BaseModelWithOutId
 from bases.utils import create_token
+from users.tasks import send_email_on_delay
 
 from .choices import (
     DeviceTypeChoices,
@@ -106,18 +107,18 @@ class User(BaseModelWithOutId, AbstractUser, PermissionsMixin):
             status = "deactivated"
         return status
 
-    def send_email_verification(self):
+    def send_email_verification(self, base_url):
         self.activation_token = create_token()
         self.is_email_verified = False
         self.save()
-        # context = {
-        #     'username': self.username,
-        #     'email': self.email,
-        #     'url': build_absolute_uri(f"verify/{self.activation_token}/"),
-        # }
-        # template = 'emails/sing_up_email.html'
-        # subject = 'Email Verification'
-        # send_email_on_delay.delay(template, context, subject, self.email)
+        context = {
+            'username': self.username,
+            'email': self.email,
+            'url': f"http://{base_url}/verify/{self.activation_token}/",
+        }
+        template = 'emails/activation_mail.html'
+        subject = 'Email Verification'
+        send_email_on_delay.delay(template, context, subject, self.email)
 
 
 class Address(models.Model):

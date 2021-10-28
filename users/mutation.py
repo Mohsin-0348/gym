@@ -46,7 +46,7 @@ class RegisterUser(DjangoFormMutation):
             if form.cleaned_data['password'] and validate_password(form.cleaned_data['password']):
                 pass
             user = User.objects.create_user(**form.cleaned_data)
-            user.send_email_verification()
+            user.send_email_verification(info.context.headers['host'])
         else:
             error_data = {}
             for error in form.errors:
@@ -190,7 +190,7 @@ class ResendActivationMail(graphene.Mutation):
                         "code": "already_verified"
                     }
                 )
-            user_exist.last().send_email_verification()
+            user_exist.last().send_email_verification(info.context.headers['host'])
         else:
             raise GraphQLError(
                 message="Invalid email!",

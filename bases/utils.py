@@ -17,7 +17,7 @@ def create_token():
 
 
 def build_absolute_uri(path) -> str:
-    return f"{settings.SITE_URL}/{path}"
+    return f"http://{settings.SITE_URL}/{path}"
 
 
 def get_json_data(request) -> object:
@@ -41,4 +41,9 @@ def username_validator(name):
 
 def divide_chunks(list_d, n):
     for i in range(0, len(list_d), n):
-        yield list_d[i : i + n]
+        yield list_d[i: i + n]
+
+
+def get_tenant():
+    domain = None
+    return domain

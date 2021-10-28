@@ -82,14 +82,16 @@ class UpdateUser(DjangoFormMutation):
     @is_authenticated
     def mutate_and_get_payload(self, info, **input):
         user = info.context.user
+        user_profile, created = UserProfile.objects.get_or_create(user=user)
         form = UserUpdateForm(data=input)
+        if not created:
+            form = UserUpdateForm(data=input, instance=user_profile)
         if form.is_valid():
-            user.first_name = form.cleaned_data['username']
+            user.username = form.cleaned_data['username']
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
             user.save()
             del form.cleaned_data['first_name'], form.cleaned_data['last_name'], form.cleaned_data['username']
-            user_profile, created = UserProfile.objects.get_or_create(user=user)
             if user.is_admin and created:
                 form.cleaned_data['role'] = RoleChoices.ADMIN
             UserProfile.objects.filter(id=user_profile.id).update(**form.cleaned_data)

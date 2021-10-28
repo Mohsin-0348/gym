@@ -184,6 +184,8 @@ SHOW_PUBLIC_IF_NO_TENANT_FOUND = True
 
 # DB_PREFIX = 'w3gym'
 
+PASSWORD_RESET_TIMESTAMP = 5
+
 # Cores origin
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",

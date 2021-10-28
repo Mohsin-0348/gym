@@ -19,6 +19,14 @@ class UserFilters(BaseFilters):
         field_name='email',
         lookup_expr='icontains'
     )
+    first_name = django_filters.CharFilter(
+        field_name='first_name',
+        lookup_expr='icontains'
+    )
+    last_name = django_filters.CharFilter(
+        field_name='last_name',
+        lookup_expr='icontains'
+    )
 
     class Meta:
         model = User
@@ -26,6 +34,8 @@ class UserFilters(BaseFilters):
             'id',
             'username',
             'email',
+            'first_name',
+            'last_name',
             'is_email_verified',
             'is_active',
             'is_staff',
@@ -41,22 +51,12 @@ class UserProfileFilters(BaseFilters):
         field_name='user__email',
         lookup_expr='icontains'
     )
-    first_name = django_filters.CharFilter(
-        field_name='first_name',
-        lookup_expr='icontains'
-    )
-    last_name = django_filters.CharFilter(
-        field_name='last_name',
-        lookup_expr='icontains'
-    )
 
     class Meta:
         model = UserProfile
         fields = [
             'id',
             'user',
-            'first_name',
-            'last_name',
             'phone',
             'gender',
             'date_of_birth',

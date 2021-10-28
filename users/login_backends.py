@@ -54,7 +54,7 @@ def signup(
         user = User.objects.get(email=email)
         if check_user(user, activate):
             user = authenticate(
-                username=email,
+                username=user.username,
                 password=password
             )
             if not user:

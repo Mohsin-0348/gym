@@ -14,6 +14,7 @@ from backend.permissions import is_admin_user, is_authenticated
 from backend.sms import generate_otp  # send_otp
 from bases.constants import HistoryActions, VerifyActionChoices
 from bases.utils import create_token
+from users.choices import RoleChoices
 from users.forms import AddressForm, UserRegistrationForm, UserUpdateForm
 from users.login_backends import signup, social_signup
 from users.models import (
@@ -83,7 +84,13 @@ class UpdateUser(DjangoFormMutation):
         user = info.context.user
         form = UserUpdateForm(data=input)
         if form.is_valid():
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.save()
+            del form.cleaned_data['first_name'], form.cleaned_data['last_name']
             user_profile, created = UserProfile.objects.get_or_create(user=user)
+            if user.is_admin and created:
+                form.cleaned_data['role'] = RoleChoices.ADMIN
             UserProfile.objects.filter(id=user_profile.id).update(**form.cleaned_data)
         else:
             error_data = {}

@@ -135,13 +135,13 @@ class UserProfile(models.Model):
         on_delete=models.CASCADE,
         related_name="user_profile"
     )
-    first_name = models.CharField(
-        max_length=150,
-    )
-    last_name = models.CharField(
-        max_length=150,
-    )
-    address = models.OneToOneField(Address, on_delete=models.DO_NOTHING)
+    # first_name = models.CharField(
+    #     max_length=150,
+    # )
+    # last_name = models.CharField(
+    #     max_length=150,
+    # )
+    address = models.OneToOneField(Address, on_delete=models.DO_NOTHING, null=True, blank=True)
     role = models.CharField(
         max_length=16, choices=RoleChoices.choices, default=RoleChoices.MEMBER
     )  # role of user
@@ -221,6 +221,9 @@ class UserProfile(models.Model):
     privacy_policy_accepted = models.BooleanField(
         default=False
     )
+
+    def __str__(self):
+        return self.user.username
 
 
 class UnitOfHistory(models.Model):

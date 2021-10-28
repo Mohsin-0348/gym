@@ -14,6 +14,8 @@ class UserRegistrationForm(forms.ModelForm):
 
 
 class UserUpdateForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=150, required=True)
+    last_name = forms.CharField(max_length=150, required=True)
 
     class Meta:
         model = UserProfile

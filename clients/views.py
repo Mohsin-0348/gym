@@ -1,12 +1,12 @@
-from django.shortcuts import HttpResponse
+from django.shortcuts import render
 from django.views.generic import ListView
 
 from clients.models import Domain
 
 
 def index(request):
-    return HttpResponse(
-        f"<center><h2>Hello everyone to {request.tenant.name} gym</h2></center>"
+    return render(
+        request, 'available_areas.html'
     )
 
 

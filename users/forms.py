@@ -13,6 +13,14 @@ class UserRegistrationForm(forms.ModelForm):
         fields = ("username", "email", "password")
 
 
+class AdminRegistrationForm(forms.ModelForm):
+    super_user = forms.BooleanField(required=False)
+
+    class Meta:
+        model = User
+        fields = ("username", "email", "password")
+
+
 class UserUpdateForm(forms.ModelForm):
     username = forms.CharField(max_length=150, required=True)
     first_name = forms.CharField(max_length=150, required=True)

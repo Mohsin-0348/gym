@@ -63,6 +63,9 @@ TENANT_APPS = (
 
     # tenant-specific apps
     'users',
+    'members',
+    'hr',
+    'classes',
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
@@ -187,6 +190,12 @@ SHOW_PUBLIC_IF_NO_TENANT_FOUND = True
 PASSWORD_RESET_TIMESTAMP = 5
 
 OTP_TIMESTAMP = 2
+
+DEFAULT_SEAT_LIMIT_FOR_CLASS = 10
+
+DISCOUNT_USER_LIMIT = 1
+
+DEFAULT_PASSWORD = config('DEFAULT_PASSWORD', None)
 
 SITE_URL = config('SITE_URL', 'localhost')
 

@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from members.models import Member
 from users.models import (
     Address,
     ResetPassword,
@@ -23,8 +24,12 @@ class ProfileStackedInline(admin.StackedInline):
     model = UserProfile
 
 
+class MemberStackedInline(admin.StackedInline):
+    model = Member
+
+
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    inlines = [ProfileStackedInline]
+    inlines = [ProfileStackedInline, MemberStackedInline]
     model = User
     list_display = ['username', 'email']

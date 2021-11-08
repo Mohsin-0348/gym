@@ -7,7 +7,6 @@ class RoleChoices(models.TextChoices):
     ADMIN = 'admin'
     MEMBER = 'member'
     EMPLOYEE = 'employee'
-    TRAINER = 'trainer'
 
 
 class GenderChoices(models.TextChoices):

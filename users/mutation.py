@@ -10,12 +10,17 @@ from graphene_file_upload.scalars import Upload
 from graphql import GraphQLError
 
 from backend.authentication import TokenManager
-from backend.permissions import is_admin_user, is_authenticated
+from backend.permissions import is_admin_user, is_authenticated, is_super_admin
 from backend.sms import generate_otp  # send_otp
 from bases.constants import HistoryActions, VerifyActionChoices
 from bases.utils import create_token
 from users.choices import RoleChoices
-from users.forms import AddressForm, UserRegistrationForm, UserUpdateForm
+from users.forms import (
+    AddressForm,
+    AdminRegistrationForm,
+    UserRegistrationForm,
+    UserUpdateForm,
+)
 from users.login_backends import signup, social_signup
 from users.models import (
     Address,
@@ -46,6 +51,7 @@ class RegisterUser(DjangoFormMutation):
             if form.cleaned_data['password'] and validate_password(form.cleaned_data['password']):
                 pass
             user = User.objects.create_user(**form.cleaned_data)
+            UserProfile.objects.create(user=user)
             user.send_email_verification(info.context.headers['host'])
         else:
             error_data = {}
@@ -952,6 +958,56 @@ class VerifyProfilePicture(graphene.Mutation):
             )
 
 
+class AddNewAdmin(DjangoFormMutation):
+    """
+        Will take email, username and password as required fields.
+        And super_user field to define whether admin super user or staff user.
+    """
+
+    success = graphene.Boolean()
+    message = graphene.String()
+    user = graphene.Field(UserType)
+
+    class Meta:
+        form_class = AdminRegistrationForm
+
+    @is_super_admin
+    def mutate_and_get_payload(self, info, **input):
+        form = AdminRegistrationForm(data=input)
+        if form.is_valid():
+            if form.cleaned_data['password'] and validate_password(form.cleaned_data['password']):
+                pass
+            super_user = form.cleaned_data['super_user']
+            del form.cleaned_data['super_user']
+            user = User.objects.create_user(**form.cleaned_data)
+            user.is_staff = True
+            user.is_superuser = super_user
+            user.save()
+        else:
+            error_data = {}
+            for error in form.errors:
+                for err in form.errors[error]:
+                    error_data[error] = err
+            raise GraphQLError(
+                message="Invalid input request.",
+                extensions={
+                    "errors": error_data,
+                    "code": "invalid_input"
+                }
+            )
+        UnitOfHistory.user_history(
+            action=HistoryActions.NEW_ADMIN_ADDED,
+            user=info.context.user,
+            perform_for=user,
+            request=info.context
+        )
+        return AddNewAdmin(
+            message="New admin successfully added.",
+            success=True,
+            user=user
+        )
+
+
 class Mutation(graphene.ObjectType):
     register_user = RegisterUser.Field()
     login_user = LoginUser.Field()
@@ -970,4 +1026,5 @@ class Mutation(graphene.ObjectType):
     profile_picture_verification = VerifyProfilePicture.Field()
     document_verification = VerifyDocuments.Field()
     otp_mutation = OTPMutation.Field()
-    user_address_mutation = AddressMutation.Field()
+    add_new_admin = AddNewAdmin.Field()
+    # user_address_mutation = AddressMutation.Field()

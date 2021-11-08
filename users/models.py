@@ -92,7 +92,7 @@ class User(BaseModelWithOutId, AbstractUser, PermissionsMixin):
 
     @property
     def is_admin(self) -> bool:
-        return self.is_staff or self.is_superuser
+        return self.is_staff and self.is_superuser
 
     @property
     def status(self) -> str:
@@ -122,15 +122,18 @@ class User(BaseModelWithOutId, AbstractUser, PermissionsMixin):
 
 
 class Address(models.Model):
-    address1 = models.TextField()
-    address2 = models.TextField(blank=True, null=True)
+    address_type = models.CharField(max_length=32)
+    address = models.TextField()
     city = models.CharField(max_length=128)
     state = models.CharField(max_length=128)
     postal_code = models.CharField(max_length=32)
     country = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.address1
+        return self.address
+
+    class Meta:
+        verbose_name_plural = "Addresses"
 
 
 class UserProfile(models.Model):
@@ -145,7 +148,7 @@ class UserProfile(models.Model):
     # last_name = models.CharField(
     #     max_length=150,
     # )
-    address = models.OneToOneField(Address, on_delete=models.DO_NOTHING, null=True, blank=True)
+    address = models.ForeignKey(Address, on_delete=models.DO_NOTHING, null=True, blank=True, related_name="user_address")
     role = models.CharField(
         max_length=16, choices=RoleChoices.choices, default=RoleChoices.MEMBER
     )  # role of user

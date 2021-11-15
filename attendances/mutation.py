@@ -335,6 +335,8 @@ class EmployeeAttendanceMutation(graphene.Mutation):
     def mutate(self, info, check_out=False, **kwargs):
         user = info.context.user
         employee = Employee.objects.get(user=user)
+        if user.is_staff:
+            employee, created = Employee.objects.get_or_create(user=user)
         if check_out:
             if not EmployeeAttendance.objects.filter(
                     employee=employee, check_in__date=timezone.now().date(), check_out=None

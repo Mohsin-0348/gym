@@ -2,6 +2,8 @@
 from graphql import GraphQLError
 
 from hr.models import Employee
+from members.models import Member
+from users.choices import RoleChoices
 from users.models import UserProfile
 
 
@@ -36,6 +38,21 @@ def check_trainer(user):
     if user_employee.designation == Employee.DesignationChoice.TRAINER or \
             user_employee.designation == Employee.DesignationChoice.ADMINISTRATOR:
         return user_employee
+    else:
+        raise GraphQLError(
+            message="User can't perform this operation.",
+            extensions={
+                "errors": "User can't perform this operation.",
+                "code": "invalid_role"
+            }
+        )
+
+
+def check_member(user):
+    user_profile = UserProfile.objects.get(user=user)
+    if user_profile.role == RoleChoices.MEMBER:
+        member, created = Member.objects.get_or_create(user=user)
+        return member
     else:
         raise GraphQLError(
             message="User can't perform this operation.",

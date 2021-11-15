@@ -14,7 +14,7 @@ from members.models import (
 
 
 class MemberFilters(BaseFilters):
-    """UserFilter will define here"""
+    """Member Filter will define here"""
     height = django_filters.CharFilter(
         field_name='height',
         lookup_expr='exact'
@@ -39,7 +39,7 @@ class MemberFilters(BaseFilters):
 
 
 class FoodFilters(BaseFilters):
-    """UserFilter will define here"""
+    """food filter will define here"""
     name = django_filters.CharFilter(
         field_name='name',
         lookup_expr='icontains'
@@ -64,7 +64,7 @@ class FoodFilters(BaseFilters):
 
 
 class NutritionPlanFilters(BaseFilters):
-    """UserFilter will define here"""
+    """nutrition plan filter will define here"""
     member = django_filters.CharFilter(
         field_name='member__user__username',
         lookup_expr='icontains'
@@ -84,7 +84,7 @@ class NutritionPlanFilters(BaseFilters):
 
 
 class FoodToEatFilters(BaseFilters):
-    """UserFilter will define here"""
+    """food to eat filter will define here"""
     plan = django_filters.CharFilter(
         field_name='plan__meal_type',
         lookup_expr='icontains'
@@ -109,7 +109,7 @@ class FoodToEatFilters(BaseFilters):
 
 
 class FoodConsumedFilters(BaseFilters):
-    """UserFilter will define here"""
+    """food consumed filter will define here"""
     plan = django_filters.CharFilter(
         field_name='plan__meal_type',
         lookup_expr='icontains'
@@ -134,7 +134,7 @@ class FoodConsumedFilters(BaseFilters):
 
 
 class TrackNutritionPlanFilters(BaseFilters):
-    """UserFilter will define here"""
+    """track nutrition plan filter will define here"""
     plan = django_filters.CharFilter(
         field_name='plan__meal_type',
         lookup_expr='icontains'

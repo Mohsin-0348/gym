@@ -32,4 +32,4 @@ class MemberStackedInline(admin.StackedInline):
 class UserAdmin(admin.ModelAdmin):
     inlines = [ProfileStackedInline, MemberStackedInline]
     model = User
-    list_display = ['username', 'email']
+    list_display = ['username', 'email', 'is_active', 'is_staff', 'is_superuser']

@@ -43,7 +43,7 @@ class ClassSchedule(BaseModelWithOutId):
     base_class = models.ForeignKey(BaseClass, on_delete=models.DO_NOTHING, related_name="class_schedules")
     trainer = models.ForeignKey(Employee, on_delete=models.DO_NOTHING, related_name="trainer_classes")
     members = models.ManyToManyField(Member, related_name='members', blank=True, null=True)
-    attended_members = models.ManyToManyField(Member, related_name='attended_members', blank=True, null=True)
+    # attended_members = models.ManyToManyField(Member, related_name='attended_members', blank=True, null=True)
     date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()

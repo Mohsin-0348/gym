@@ -1,5 +1,6 @@
 import graphene
 
+import attendances.schema as attendance_schema
 import classes.schema as class_schema
 import hr.schema as hr_schema
 import members.schema as member_schema
@@ -11,6 +12,7 @@ class Query(
     member_schema.Query,
     hr_schema.Query,
     class_schema.Query,
+    attendance_schema.Query,
     graphene.ObjectType
 ):
     pass
@@ -21,6 +23,7 @@ class Mutation(
     member_schema.Mutation,
     hr_schema.Mutation,
     class_schema.Mutation,
+    attendance_schema.Mutation,
     graphene.ObjectType
 ):
     pass

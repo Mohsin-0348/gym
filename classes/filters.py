@@ -35,7 +35,7 @@ class ClassFilters(BaseFilters):
 
 class ScheduledClassFilters(BaseFilters):
     """
-        Class Filter will define here.
+        Class schedule Filter will define here.
     """
     base_class = django_filters.CharFilter(
         field_name='base_class__name',
@@ -63,7 +63,7 @@ class ScheduledClassFilters(BaseFilters):
 
 class ClassBookingFilters(BaseFilters):
     """
-        Class Filter will define here.
+        Class booking Filter will define here.
     """
     member = django_filters.CharFilter(
         field_name='member__user__username',

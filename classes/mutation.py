@@ -14,13 +14,8 @@ from classes.forms import (
     WeekDayForm,
 )
 from classes.models import BaseClass, ClassBooking, ClassSchedule, WeekDay
-from classes.object_types import (  # ClassScheduleType,
-    ClassBookingType,
-    ClassType,
-    WeekDayType,
-)
+from classes.object_types import ClassBookingType, ClassType, WeekDayType
 from members.models import Member
-from members.utils import check_trainer
 from users.choices import RoleChoices
 from users.models import UserProfile
 
@@ -319,41 +314,6 @@ class PostponeClassMutation(graphene.Mutation):
         return PostponeClassMutation(success=True, message="Successfully postponed.", class_schedule_object=obj)
 
 
-class ClassAttendanceMutation(graphene.Mutation):
-    """
-
-    """
-    success = graphene.Boolean()
-    message = graphene.String()
-    class_schedule_object = graphene.Field(ClassBookingType)
-
-    class Arguments:
-        object_id = graphene.ID()
-        member = graphene.ID()
-        remove = graphene.Boolean()
-
-    @is_authenticated
-    def mutate(self, info, object_id, member, remove=False, **kwargs):
-        trainer = check_trainer(info.context.user)
-        obj = ClassSchedule.objects.get(id=object_id, postponed=False)
-        if trainer != obj.trainer:
-            raise GraphQLError(
-                message="Trainer does not have permission to take attendance.",
-                extensions={
-                    'errors': {"trainer": "Trainer does not have permission to take attendance."},
-                    "code": "invalid_trainer"
-                }
-            )
-        member = Member.objects.get(id=member)
-        if remove:
-            obj.attended_members.remove(member)
-        else:
-            obj.attended_members.add(member)
-        return ClassAttendanceMutation(
-            success=True, message=f"Successfully {'removed' if remove else 'added'}.", class_schedule_object=obj
-        )
-
-
 class Mutation(graphene.ObjectType):
     weekday_mutation = WeekDayMutation.Field()
     class_mutation = ClassMutation.Field()
@@ -361,4 +321,3 @@ class Mutation(graphene.ObjectType):
     update_class_schedule = ClassScheduleUpdateMutation.Field()
     postpone_class = PostponeClassMutation.Field()
     book_class = ClassBookingMutation.Field()
-    class_attendance_mutation = ClassAttendanceMutation.Field()

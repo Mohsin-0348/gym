@@ -4,6 +4,7 @@ from members.models import (
     Food,
     FoodsConsumed,
     FoodToEat,
+    Member,
     NutritionPlan,
     TrackBodyMeasurement,
     TrackNutritionPlan,
@@ -33,3 +34,6 @@ class TrackNutritionPlanAdmin(admin.ModelAdmin):
     inlines = [FoodsConsumedStackedInline]
     model = TrackNutritionPlan
     list_display = ['plan', 'created_on']
+
+
+admin.site.register(Member)

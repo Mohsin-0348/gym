@@ -45,8 +45,8 @@ class CheckInCheckOut(models.Model):
         auto_now_add=True
     )  # object check-in time. will automatic generate
     check_out = models.DateTimeField(
-        auto_now=True
-    )  # object check-out time. will automatic generate
+        blank=True, null=True
+    )
 
     class Meta:
         abstract = True  # define this table/model is abstract.
